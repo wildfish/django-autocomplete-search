@@ -5,3 +5,5 @@
 #    pip-compile requirements.in
 #
 django==1.9
+py==1.4.31                # via pytest
+pytest==2.8.5

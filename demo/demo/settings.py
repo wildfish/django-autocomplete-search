@@ -37,8 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'autocomplete_search',
 
-    'demo.app'
+    'demo.app',
 )
 
 MIDDLEWARE_CLASSES = (
