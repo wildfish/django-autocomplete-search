@@ -1,4 +1,4 @@
 .hypothesis
 .cache
 __pycache__
-
+.coverage

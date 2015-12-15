@@ -23,7 +23,7 @@ class SearchView(TemplateView):
             for field in fields:
                 _lookup = self.get_field_lookup(model, field)
 
-                for q in model.objects.filter(**{_lookup: self.request.GET['q']}).values_list(field, flat=True):
+                for q in model.objects.filter(**{_lookup: self.request.GET['q']}).values_list(field, flat=True).distinct():
                     results.append({
                         'app': model._meta.app_label,
                         'model': model._meta.object_name,
@@ -31,10 +31,10 @@ class SearchView(TemplateView):
                         'q': q
                     })
 
-                if self.get_autocomplete_limit() and len(results) >= self.get_autocomplete_limit():
-                    return JsonResponse(results[:self.get_autocomplete_limit()], safe=False)
+        return JsonResponse(sorted(results, key=lambda x: self.ordering(x))[:self.get_autocomplete_limit()], safe=False)
 
-        return JsonResponse(results, safe=False)
+    def ordering(self, elem):
+        return elem['q'].lower(), elem['field'].lower(), elem['model'].lower(), elem['app'].lower()
 
     def get(self, request, *args, **kwargs):
         if 'autocomplete' in request.GET:
