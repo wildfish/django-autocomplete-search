@@ -3,3 +3,5 @@ pytest
 django-webtest
 hypothesis
 coverage
+django-haystack
+elasticsearch

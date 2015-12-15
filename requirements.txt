@@ -6,12 +6,15 @@
 #
 beautifulsoup4==4.4.1     # via webtest
 coverage==4.0.3
+django-haystack==2.4.1
 django-webtest==1.7.8
 django==1.9
+elasticsearch==2.1.0
 hypothesis==1.17.0
 py==1.4.31                # via pytest
 pytest==2.8.5
 six==1.10.0               # via webtest
+urllib3==1.13             # via elasticsearch
 waitress==0.8.10          # via webtest
 webob==1.5.1              # via webtest
 webtest==2.0.20           # via django-webtest

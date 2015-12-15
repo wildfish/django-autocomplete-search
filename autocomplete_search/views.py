@@ -1,8 +1,8 @@
 from django.http import JsonResponse
-from django.views.generic import TemplateView
+from haystack.generic_views import SearchView as HaystackSearchView
 
 
-class SearchView(TemplateView):
+class SearchView(HaystackSearchView):
     autocomplete_fields = {}
     lookup = 'icontains'
     autocomplete_limit = None

@@ -220,4 +220,3 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
         expected_results = sorted(expected_results, key=lambda x: (x['q'].lower(), x['field'], x['model'], x['app']))
 
         self.assertListEqual(expected_results[:5], response.json)
-

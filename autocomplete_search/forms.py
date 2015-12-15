@@ -3,6 +3,7 @@ from django.forms import widgets
 from django.forms.utils import flatatt
 from django.utils.encoding import force_text
 from django.template.loader import get_template
+from haystack.forms import SearchForm
 
 
 class AutocompleteSearchWidget(widgets.Input):
@@ -23,8 +24,7 @@ class AutocompleteSearchWidget(widgets.Input):
         })
 
 
-
-class AutocompleteSearchForm(forms.Form):
+class AutocompleteSearchForm(SearchForm):
     q = forms.CharField(max_length=255, widget=AutocompleteSearchWidget)
     app = forms.CharField(max_length=255, required=False)
     model = forms.CharField(max_length=255, required=False)
