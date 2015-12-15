@@ -1,5 +1,6 @@
 import string
 from math import ceil
+from urllib.parse import urlencode
 
 from django.core.urlresolvers import reverse
 from django_webtest import WebTestMixin
@@ -22,7 +23,7 @@ def string_containing(s, max_size=None, min_size=None, alphabet=None):
 
 class SearchViewAutocomplete(WebTestMixin, TestCase):
     @given(
-        text(min_size=1, max_size=255, alphabet=string.printable).flatmap(
+        text(min_size=1, max_size=255, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(
             lambda s: tuples(
                 just(s),
                 lists(
@@ -43,7 +44,7 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
             ModelB.objects.create(name=b)
 
         response = self.app.get(
-            reverse('model_a_search') + '?autocomplete&q=' + search,
+            reverse('model_a_search') + '?autocomplete&' + urlencode({'q': search}),
         )
 
         expected_results = [{
