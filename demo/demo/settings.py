@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'autocomplete_search',
 
-    'demo.app',
+    'app',
 )
 
 MIDDLEWARE_CLASSES = (

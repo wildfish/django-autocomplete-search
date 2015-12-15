@@ -1,2 +1,4 @@
 django
 pytest
+django-webtest
+hypothesis
