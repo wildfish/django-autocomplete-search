@@ -3,7 +3,7 @@ from .models import ModelA, ModelB, ModelC
 
 
 class AIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True)
+    text = indexes.CharField(document=True, use_template=True)
     name = indexes.CharField(model_attr='name')
 
     def get_model(self):
@@ -11,7 +11,7 @@ class AIndex(indexes.SearchIndex, indexes.Indexable):
 
 
 class BIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True)
+    text = indexes.CharField(document=True, use_template=True)
     name = indexes.CharField(model_attr='name')
 
     def get_model(self):
@@ -19,7 +19,7 @@ class BIndex(indexes.SearchIndex, indexes.Indexable):
 
 
 class CIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True)
+    text = indexes.CharField(document=True, use_template=True)
     field_a = indexes.CharField(model_attr='field_a')
     field_b = indexes.CharField(model_attr='field_b')
 

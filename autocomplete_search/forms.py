@@ -1,9 +1,11 @@
 from django import forms
+from django.apps import apps
 from django.forms import widgets
 from django.forms.utils import flatatt
 from django.utils.encoding import force_text
 from django.template.loader import get_template
 from haystack.forms import SearchForm
+from haystack.query import EmptySearchQuerySet
 
 
 class AutocompleteSearchWidget(widgets.Input):
@@ -37,3 +39,21 @@ class AutocompleteSearchForm(SearchForm):
             raise ValueError('"url" must be set')
 
         self.fields['q'].widget.url = url
+
+    def search(self):
+        # If the user has supplied a model and field to the query we only search for those specific results
+        # If not we do a simple text search on the
+        if self.cleaned_data['app'] and self.cleaned_data['model'] and self.cleaned_data['field']:
+            try:
+                model = apps.get_model(self.cleaned_data['app'], self.cleaned_data['model'])
+
+                sqs = self.searchqueryset.filter(**{self.cleaned_data['field']: self.cleaned_data['q']}).models(model)
+            except LookupError:
+                return EmptySearchQuerySet()
+        else:
+            sqs = self.searchqueryset.auto_query(self.cleaned_data['q'])
+
+        if self.load_all:
+            sqs = sqs.load_all()
+
+        return sqs

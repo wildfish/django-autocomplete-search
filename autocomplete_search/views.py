@@ -1,11 +1,27 @@
 from django.http import JsonResponse
 from haystack.generic_views import SearchView as HaystackSearchView
+from haystack.query import SearchQuerySet
+
+from .forms import AutocompleteSearchForm
 
 
 class SearchView(HaystackSearchView):
     autocomplete_fields = {}
     lookup = 'icontains'
     autocomplete_limit = None
+    search_url = None
+    form_class = AutocompleteSearchForm
+
+    def get_queryset(self):
+        return SearchQuerySet()
+
+    def get_form_kwargs(self):
+        kwargs = super(SearchView, self).get_form_kwargs()
+        kwargs['url'] = self.get_search_url()
+        return kwargs
+
+    def get_search_url(self):
+        return self.search_url
 
     def get_autocomplete_limit(self):
         return self.autocomplete_limit
@@ -31,9 +47,9 @@ class SearchView(HaystackSearchView):
                         'q': q
                     })
 
-        return JsonResponse(sorted(results, key=lambda x: self.ordering(x))[:self.get_autocomplete_limit()], safe=False)
+        return JsonResponse(sorted(results, key=lambda x: self.autocomplete_ordering(x))[:self.get_autocomplete_limit()], safe=False)
 
-    def ordering(self, elem):
+    def autocomplete_ordering(self, elem):
         return elem['q'].lower(), elem['field'].lower(), elem['model'].lower(), elem['app'].lower()
 
     def get(self, request, *args, **kwargs):
@@ -41,7 +57,3 @@ class SearchView(HaystackSearchView):
             return self.get_autocomplete_results()
 
         return super().get(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        # perform actual search
-        return super().get_context_data(**kwargs)

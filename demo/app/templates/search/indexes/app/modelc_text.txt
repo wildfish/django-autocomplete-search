@@ -1,0 +1,2 @@
+{{ object.field_a }}
+{{ object.field_b }}

@@ -1,28 +1,14 @@
 import string
-from math import ceil
 from urllib.parse import urlencode
 
 from django.core.urlresolvers import reverse
 from django_webtest import WebTestMixin
 from hypothesis import given
 from hypothesis.extra.django import TestCase
-from hypothesis.strategies import text, builds, lists, tuples, just
+from hypothesis.strategies import text, lists, tuples, just
 
+from .strategies import string_containing, string_not_containing
 from ..models import ModelA, ModelB, ModelC
-
-
-def string_containing(s, max_size=None, min_size=None, alphabet=None):
-    part_max_size = (max_size - len(s)) // 2 if max_size else None
-    part_min_size = ceil((min_size - len(s)) // 2) if min_size else None
-
-    def _gen_str(pre, suf):
-        return pre + s + suf
-
-    return builds(_gen_str, text(min_size=part_min_size, max_size=part_max_size, alphabet=alphabet), text(min_size=part_min_size, max_size=part_max_size, alphabet=alphabet))
-
-
-def string_not_containing(s, max_size=None, min_size=None, alphabet=None, average_size=None):
-    return text(min_size=max_size, max_size=min_size, average_size=average_size, alphabet=alphabet).filter(lambda _s: s.lower() not in _s.lower())
 
 
 class SearchViewAutocomplete(WebTestMixin, TestCase):
