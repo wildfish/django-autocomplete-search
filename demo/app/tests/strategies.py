@@ -1,6 +1,6 @@
 from math import ceil
 
-from hypothesis.strategies import builds, text
+from hypothesis.strategies import builds, text, sampled_from
 
 
 def string_containing(s, max_size=None, min_size=None, alphabet=None, with_spacing=False):
@@ -21,3 +21,7 @@ def string_containing(s, max_size=None, min_size=None, alphabet=None, with_spaci
 
 def string_not_containing(s, max_size=None, min_size=None, alphabet=None, average_size=None):
     return text(min_size=max_size, max_size=min_size, average_size=average_size, alphabet=alphabet).filter(lambda _s: s.lower() not in _s.lower())
+
+
+def false_values():
+    return sampled_from([False, None, '', [], (), {}, 0, 0.0])

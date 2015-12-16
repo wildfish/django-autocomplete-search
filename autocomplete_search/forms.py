@@ -9,9 +9,9 @@ from haystack.query import EmptySearchQuerySet
 
 
 class AutocompleteSearchWidget(widgets.Input):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, url=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.url = None
+        self.url = url
 
     def render(self, name, value, attrs=None):
         value = value or ''
@@ -20,7 +20,7 @@ class AutocompleteSearchWidget(widgets.Input):
         if value:
             final_attrs['value'] = force_text(self._format_value(value))
 
-        return get_template('autocomplete_search_widget.html').render({
+        return get_template('autocomplete_search/autocomplete_search_widget.html').render({
             'attrs': flatatt(final_attrs),
             'url': self.url,
         })
