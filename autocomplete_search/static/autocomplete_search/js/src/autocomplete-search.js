@@ -1,5 +1,5 @@
-import $ from 'jquery/dist/jquery';
-import ui from 'jquery-ui/jquery-ui';
+import $ from 'jquery';
+import ui from 'jquery-ui/autocomplete';
 
 var _currentSearchRequest = null;
 
