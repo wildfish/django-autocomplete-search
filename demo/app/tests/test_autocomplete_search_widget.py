@@ -23,6 +23,7 @@ class AutocompleteSearchWidgetRender(TestCase):
 
         attrs['name'] = name
         attrs['type'] = None
+        attrs['autocomplete'] = 'off'
         expected_render = get_template('autocomplete_search/autocomplete_search_widget.html').render({
             'url': url,
             'attrs': flatatt(attrs),
@@ -43,6 +44,7 @@ class AutocompleteSearchWidgetRender(TestCase):
 
         attrs['name'] = name
         attrs['type'] = None
+        attrs['autocomplete'] = 'off'
         attrs['value'] = value
         expected_render = get_template('autocomplete_search/autocomplete_search_widget.html').render({
             'url': url,

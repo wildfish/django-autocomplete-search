@@ -25,7 +25,7 @@ class AutocompleteSearchWidget(widgets.Input):
     def render(self, name, value, attrs=None):
         value = value or ''
 
-        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
+        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name, autocomplete='off')
         if value:
             final_attrs['value'] = force_text(self._format_value(value))
 
