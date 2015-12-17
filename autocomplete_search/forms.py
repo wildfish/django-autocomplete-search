@@ -1,3 +1,5 @@
+import uuid
+
 from django import forms
 from django.apps import apps
 from django.forms import widgets
@@ -12,6 +14,13 @@ class AutocompleteSearchWidget(widgets.Input):
     def __init__(self, *args, url=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.url = url
+        self._uuid = None
+
+    @property
+    def uuid(self):
+        if not self._uuid:
+            self._uuid = uuid.uuid4().hex
+        return self._uuid
 
     def render(self, name, value, attrs=None):
         value = value or ''
@@ -23,14 +32,15 @@ class AutocompleteSearchWidget(widgets.Input):
         return get_template('autocomplete_search/autocomplete_search_widget.html').render({
             'attrs': flatatt(final_attrs),
             'url': self.url,
+            'uuid': self.uuid
         })
 
 
 class AutocompleteSearchForm(SearchForm):
     q = forms.CharField(max_length=255, widget=AutocompleteSearchWidget)
-    app = forms.CharField(max_length=255, required=False)
-    model = forms.CharField(max_length=255, required=False)
-    field = forms.CharField(max_length=255, required=False)
+    app = forms.CharField(max_length=255, required=False, widget=widgets.HiddenInput)
+    model = forms.CharField(max_length=255, required=False, widget=widgets.HiddenInput)
+    field = forms.CharField(max_length=255, required=False, widget=widgets.HiddenInput)
 
     def __init__(self, *args, url=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,6 +49,7 @@ class AutocompleteSearchForm(SearchForm):
             raise ValueError('"url" must be set')
 
         self.fields['q'].widget.url = url
+        print(self.fields['q'].widget.uuid)
 
     def search(self):
         # If the user has supplied a model and field to the query we only search for those specific results

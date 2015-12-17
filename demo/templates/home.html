@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td>Model A</td>
+            <td>Model A Limit 5</td>
+            <td>Model A Load All</td>
+            <td>Model C</td>
+            <td>Model C Field A</td>
+        </tr>
+        <tr>
+            <td>
+                <form action="{% url 'model_a_search' %}">
+                    {{ model_a_form.as_p }}
+                    <input type="submit" style="display: none">
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'model_a_limit_5_search' %}">
+                    {{ model_a_limit_5_form.as_p }}
+                    <input type="submit" style="display: none">
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'model_a_load_all_search' %}">
+                    {{ model_a_load_all_form.as_p }}
+                    <input type="submit" style="display: none">
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'model_c_search' %}">
+                    {{ model_c_form.as_p }}
+                    <input type="submit" style="display: none">
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'model_c_field_a_search' %}">
+                    {{ model_c_field_a_form.as_p }}
+                    <input type="submit" style="display: none">
+                </form>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

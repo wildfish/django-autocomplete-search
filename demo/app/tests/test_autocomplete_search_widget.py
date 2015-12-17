@@ -18,13 +18,15 @@ class AutocompleteSearchWidgetRender(TestCase):
         false_values(),
     )
     def test_value_is_false___result_is_rendered_without_the_value(self, url, name, attrs, value):
-        render = AutocompleteSearchWidget(url=url).render(name, value, attrs)
+        widget = AutocompleteSearchWidget(url=url)
+        render = widget.render(name, value, attrs)
 
         attrs['name'] = name
         attrs['type'] = None
         expected_render = get_template('autocomplete_search/autocomplete_search_widget.html').render({
             'url': url,
-            'attrs': flatatt(attrs)
+            'attrs': flatatt(attrs),
+            'uuid': widget.uuid
         })
 
         self.assertHTMLEqual(expected_render, render)
@@ -36,14 +38,16 @@ class AutocompleteSearchWidgetRender(TestCase):
         text(min_size=1, max_size=50, alphabet=string.ascii_letters),
     )
     def test_value_is_not___result_is_rendered_with_the_value(self, url, name, attrs, value):
-        render = AutocompleteSearchWidget(url=url).render(name, value, attrs)
+        widget = AutocompleteSearchWidget(url=url)
+        render = widget.render(name, value, attrs)
 
         attrs['name'] = name
         attrs['type'] = None
         attrs['value'] = value
         expected_render = get_template('autocomplete_search/autocomplete_search_widget.html').render({
             'url': url,
-            'attrs': flatatt(attrs)
+            'attrs': flatatt(attrs),
+            'uuid': widget.uuid
         })
 
         self.assertHTMLEqual(expected_render, render)

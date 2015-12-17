@@ -3,3 +3,4 @@
 __pycache__
 .coverage
 *.sqlite3
+node_modules

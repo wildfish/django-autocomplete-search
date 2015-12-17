@@ -1,1 +1,14 @@
-<input{{ attrs }} />
+<input{{ attrs }} data-autocomplete-uuid={{ uuid }}/>
+
+<script>
+    function registerAutocomplete_{{ uuid }}() {
+        autocompleteSearch.init("[data-autocomplete-uuid='{{ uuid }}']", "{{ url }}");
+    }
+
+    if (window.addEventListener) {
+        window.addEventListener("load", registerAutocomplete_{{ uuid }}, false);
+    }
+    else if (window.attachEvent) {
+        window.attachEvent("onload", registerAutocomplete_{{ uuid }});
+    }
+</script>
