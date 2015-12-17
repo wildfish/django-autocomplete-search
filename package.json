@@ -1,0 +1,33 @@
+{
+  "name": "django-autocomplete-search",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build-js",
+    "build-js": "browserify ./autocomplete_search/static/js/index.js -o ./autocomplete_search/static/dist/django-autocomplete-search.js -v -d -s autocompleteSearch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wildfish/django-autocomplete-search.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wildfish/django-autocomplete-search/issues"
+  },
+  "homepage": "https://github.com/wildfish/django-autocomplete-search#readme",
+  "dependencies": {
+    "babel": "^6.3.13",
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify"
+      ]
+    ]
+  }
+}
