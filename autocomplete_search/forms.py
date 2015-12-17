@@ -37,7 +37,7 @@ class AutocompleteSearchWidget(widgets.Input):
 
 
 class AutocompleteSearchForm(SearchForm):
-    q = forms.CharField(max_length=255, widget=AutocompleteSearchWidget)
+    q = forms.CharField(max_length=255, required=False, widget=AutocompleteSearchWidget)
     app = forms.CharField(max_length=255, required=False, widget=widgets.HiddenInput)
     model = forms.CharField(max_length=255, required=False, widget=widgets.HiddenInput)
     field = forms.CharField(max_length=255, required=False, widget=widgets.HiddenInput)
@@ -49,7 +49,6 @@ class AutocompleteSearchForm(SearchForm):
             raise ValueError('"url" must be set')
 
         self.fields['q'].widget.url = url
-        print(self.fields['q'].widget.uuid)
 
     def search(self):
         # If the user has supplied a model and field to the query we only search for those specific results

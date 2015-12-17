@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+    <form>
+        {{ form.as_p }}
+        <input type="submit" style="display: none">
+    </form>
+
     {% for object in object_list %}
         <div>{{ object }}</div>
     {% endfor %}
-</body>
-</html>
+{% endblock %}
