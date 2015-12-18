@@ -80,7 +80,10 @@ class AutocompleteSearchForm(SearchForm):
             except LookupError:
                 return EmptySearchQuerySet()
         else:
-            sqs = self.searchqueryset.auto_query(self.cleaned_data['q'], fieldname=AUTCOMPLETE_DOCUMENT_FIELD)
+            if 'q' in self.cleaned_data and self.cleaned_data['q']:
+                sqs = self.searchqueryset.auto_query(self.cleaned_data['q'], fieldname=AUTCOMPLETE_DOCUMENT_FIELD)
+            else:
+                sqs = self.searchqueryset
 
         if self.load_all:
             sqs = sqs.load_all()
