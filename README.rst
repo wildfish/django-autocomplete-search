@@ -32,7 +32,7 @@ Usage
 =====
 
 Using django-autocomplete-search is simple, just create a view inheriting from ``SearchView`` and supply a ``search_url``
-and ``autocomplete_fields``:: python
+and ``autocomplete_fields``::
 
     from django.core.urlresolvers import reverse_lazy
     from autocomplete_search import views
