@@ -39,6 +39,9 @@ And add the css and javascript into your template::
     <link href="{% static 'autocomplete_search/dist/autocomplete-search.css' %}" rel="stylesheet">
     <script src="{% static 'autocomplete_search/dist/autocomplete-search.js' %}"></script>
 
+You should also add the ``AUTCOMPLETE_DOCUMENT_FIELD`` setting to your ``settings.py``, this determines which field is
+used for the document search. If no field is set the setting defaults to ``content``.
+
 django 1.9
 ==========
 
