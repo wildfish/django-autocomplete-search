@@ -1,0 +1,6 @@
+recursive-include autocomplete_search/static/autocomplete_search/dist *
+recursive-include autocomplete_search/templates *
+include README.rst
+include setup.cfg
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
