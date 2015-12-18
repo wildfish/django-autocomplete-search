@@ -5,4 +5,3 @@ hypothesis
 coverage
 django-haystack
 elasticsearch
-libsass
