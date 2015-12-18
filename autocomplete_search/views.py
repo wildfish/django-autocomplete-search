@@ -44,7 +44,8 @@ class SearchView(HaystackSearchView):
                         'app': model._meta.app_label,
                         'model': model._meta.object_name,
                         'field': field,
-                        'q': q
+                        'q': q,
+                        'label': q
                     })
 
         return JsonResponse(sorted(results, key=lambda x: self.autocomplete_ordering(x))[:self.get_autocomplete_limit()], safe=False)

@@ -54,7 +54,7 @@ class SearchViewResults(WebTestMixin, TestCase):
             just(s),
             lists(
                 tuples(
-                    string_containing(s, max_size=255, alphabet=string.printable, with_spacing=True),
+                    just(s),
                     string_not_containing(s, max_size=255, alphabet=string.printable),
                 ),
                 min_size=1,
@@ -62,15 +62,15 @@ class SearchViewResults(WebTestMixin, TestCase):
             ),
             lists(
                 tuples(
-                    string_not_containing(s, max_size=255, alphabet=string.printable),
-                    string_containing(s, max_size=255, alphabet=string.printable, with_spacing=True),
+                    string_containing(s, min_size=len(s) + 2, max_size=255, alphabet=string.printable),
+                    just(s),
                 ),
                 min_size=1,
                 max_size=20
             ),
         ))
     )
-    def test_user_supplies_query_and_field_info_contained_by_some_objects___result_is_from_haystacks_normal_query_filtered_by_model_and_field(self, query_matching_missing):
+    def test_user_supplies_query_and_field_info_matched_by_some_objects___results_exactly_matching_the_model_and_field_are_returned(self, query_matching_missing):
         q, matching, missing = query_matching_missing
 
         ModelC.objects.bulk_create(ModelC(field_a=a, field_b=b) for a, b in chain(matching, missing))
@@ -80,10 +80,34 @@ class SearchViewResults(WebTestMixin, TestCase):
             reverse('model_c_search') + '?' + urlencode({'app': 'app', 'model': 'ModelC', 'field': 'field_a', 'q': q}),
         )
 
-        self.assertListEqual(
-            list((r.pk, r.app_label, r.model_name) for r in SearchQuerySet().filter(field_a=q).models(ModelC)[:RESULTS_PER_PAGE]),
-            list((r.pk, r.app_label, r.model_name) for r in response.context['object_list'])
+        self.assertSetEqual(
+            set(ModelC.objects.filter(field_a=q)),
+            set(r.object for r in response.context['object_list'])
         )
+
+    @given(text(max_size=200, min_size=1, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
+            just(s),
+            lists(
+                tuples(
+                    string_containing(s, min_size=len(s) + 2, max_size=255, alphabet=string.printable),
+                    string_containing(s, min_size=len(s) + 2, max_size=255, alphabet=string.printable),
+                ),
+                min_size=1,
+                max_size=20
+            ),
+        ))
+    )
+    def test_user_supplies_query_and_field_info_matched_by_no_objects___no_results_are_returned(self, query_values):
+        q, values = query_values
+
+        ModelC.objects.bulk_create(ModelC(field_a=a, field_b=b) for a, b in values)
+        call_command('update_index', remove=True, verbosity=0)
+
+        response = self.app.get(
+            reverse('model_c_search') + '?' + urlencode({'app': 'app', 'model': 'ModelC', 'field': 'field_a', 'q': q}),
+        )
+
+        self.assertEqual(0, len(response.context['object_list']))
 
     @given(text(max_size=200, min_size=1, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
             just(s),

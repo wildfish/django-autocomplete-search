@@ -43,6 +43,7 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
             'model': 'ModelA',
             'field': 'name',
             'q': a,
+            'label': a,
         } for a in set(a_values)]
 
         expected_results = sorted(expected_results, key=lambda x: (x['q'].lower(), x['field'], x['model'], x['app']))
@@ -108,6 +109,7 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
             'model': 'ModelC',
             'field': 'field_a',
             'q': a,
+            'label': a,
         } for a in set(a_values)]
 
         expected_results.extend([{
@@ -115,6 +117,7 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
             'model': 'ModelC',
             'field': 'field_b',
             'q': b,
+            'label': b,
         } for b in set(b_values)])
 
         expected_results = sorted(expected_results, key=lambda x: (x['q'].lower(), x['field'], x['model'], x['app']))
@@ -144,6 +147,7 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
             'model': 'ModelA',
             'field': 'name',
             'q': v,
+            'label': v,
         } for v in values]
 
         expected_results = sorted(expected_results, key=lambda x: (x['q'].lower(), x['field'], x['model'], x['app']))
@@ -173,6 +177,7 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
             'model': 'ModelA',
             'field': 'name',
             'q': v,
+            'label': v,
         } for v in values]
 
         expected_results = sorted(expected_results, key=lambda x: (x['q'].lower(), x['field'], x['model'], x['app']))
@@ -201,6 +206,7 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
             'model': 'ModelA',
             'field': 'name',
             'q': v,
+            'label': v,
         } for v in values]
 
         expected_results = sorted(expected_results, key=lambda x: (x['q'].lower(), x['field'], x['model'], x['app']))
