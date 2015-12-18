@@ -10,6 +10,8 @@ from haystack.forms import SearchForm
 from haystack.inputs import Exact
 from haystack.query import EmptySearchQuerySet
 
+from autocomplete_search.app_settings import AUTCOMPLETE_DOCUMENT_FIELD
+
 
 class AutocompleteSearchWidget(widgets.Input):
     def __init__(self, *args, url=None, **kwargs):
@@ -39,9 +41,6 @@ class AutocompleteSearchWidget(widgets.Input):
 
 class AutocompleteSearchForm(SearchForm):
     q = forms.CharField(max_length=255, required=False, widget=AutocompleteSearchWidget)
-    app = forms.CharField(max_length=255, required=False, widget=widgets.HiddenInput)
-    model = forms.CharField(max_length=255, required=False, widget=widgets.HiddenInput)
-    field = forms.CharField(max_length=255, required=False, widget=widgets.HiddenInput)
 
     def __init__(self, *args, url=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -50,6 +49,18 @@ class AutocompleteSearchForm(SearchForm):
             raise ValueError('"url" must be set')
 
         self.fields['q'].widget.url = url
+
+    def clean(self):
+        # To prevent the app, model and field from being populated on future requests we don't have them as form
+        # fields instead we manually clean them
+        data = super(AutocompleteSearchForm, self).clean()
+
+        dummy_field = forms.CharField(required=False)
+        data['app'] = dummy_field.clean(self.data.get('app'))
+        data['model'] = dummy_field.clean(self.data.get('model'))
+        data['field'] = dummy_field.clean(self.data.get('field'))
+
+        return data
 
     def search(self):
         # If the user has supplied a model and field to the query we only search for those specific results
@@ -70,7 +81,7 @@ class AutocompleteSearchForm(SearchForm):
             except LookupError:
                 return EmptySearchQuerySet()
         else:
-            sqs = self.searchqueryset.auto_query(self.cleaned_data['q'])
+            sqs = self.searchqueryset.auto_query(self.cleaned_data['q'], fieldname=AUTCOMPLETE_DOCUMENT_FIELD)
 
         if self.load_all:
             sqs = sqs.load_all()

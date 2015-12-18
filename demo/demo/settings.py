@@ -118,3 +118,5 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'autocomplete_search',
     },
 }
+
+AUTCOMPLETE_DOCUMENT_FIELD = 'text'
