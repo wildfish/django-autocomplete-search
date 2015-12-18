@@ -13,13 +13,13 @@ from ..models import ModelA, ModelB, ModelC
 
 class SearchViewAutocomplete(WebTestMixin, TestCase):
     @given(
-        text(min_size=1, max_size=255, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(
+        text(min_size=1, max_size=255, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(
             lambda s: tuples(
                 just(s),
                 lists(
                     tuples(
-                        string_containing(s, max_size=255, alphabet=string.printable),
-                        string_containing(s, max_size=255, alphabet=string.printable),
+                        string_containing(s, max_size=255, alphabet=string.ascii_letters),
+                        string_containing(s, max_size=255, alphabet=string.ascii_letters),
                     ),
                     max_size=10,
                     min_size=1,
@@ -51,13 +51,13 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
         self.assertListEqual(expected_results, response.json)
 
     @given(
-        text(min_size=1, max_size=255, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(
+        text(min_size=1, max_size=255, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(
             lambda s: tuples(
                 just(s),
                 lists(
                     tuples(
-                        string_not_containing(s, max_size=255, alphabet=string.printable),
-                        string_containing(s, max_size=255, alphabet=string.printable),
+                        string_not_containing(s, max_size=255, alphabet=string.ascii_letters),
+                        string_containing(s, max_size=255, alphabet=string.ascii_letters),
                     ),
                     max_size=10,
                     min_size=1,
@@ -79,13 +79,13 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
         self.assertListEqual(expected_results, response.json)
 
     @given(
-        text(min_size=1, max_size=255, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(
+        text(min_size=1, max_size=255, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(
             lambda s: tuples(
                 just(s),
                 lists(
                     tuples(
-                        string_containing(s, max_size=255, alphabet=string.printable),
-                        string_containing(s, max_size=255, alphabet=string.printable),
+                        string_containing(s, max_size=255, alphabet=string.ascii_letters),
+                        string_containing(s, max_size=255, alphabet=string.ascii_letters),
                     ),
                     max_size=10,
                     min_size=1,
@@ -125,10 +125,10 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
         self.assertListEqual(expected_results, response.json)
 
     @given(
-        text(min_size=1, max_size=255, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(
+        text(min_size=1, max_size=255, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(
             lambda s: tuples(
                 just(s),
-                lists(string_containing(s, max_size=255, alphabet=string.printable), max_size=10, unique=True)
+                lists(string_containing(s, max_size=255, alphabet=string.ascii_letters), max_size=10, unique=True)
             )
         )
     )
@@ -155,10 +155,10 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
         self.assertListEqual(expected_results, response.json)
 
     @given(
-        text(min_size=1, max_size=255, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(
+        text(min_size=1, max_size=255, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(
             lambda s: tuples(
                 just(s),
-                lists(string_containing(s, max_size=255, alphabet=string.printable), max_size=10, unique=True)
+                lists(string_containing(s, max_size=255, alphabet=string.ascii_letters), max_size=10, unique=True)
             )
         )
     )
@@ -185,10 +185,10 @@ class SearchViewAutocomplete(WebTestMixin, TestCase):
         self.assertListEqual(expected_results, response.json)
 
     @given(
-        text(min_size=1, max_size=200, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(
+        text(min_size=1, max_size=200, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(
             lambda s: tuples(
                 just(s),
-                lists(string_containing(s, max_size=255, alphabet=string.printable), min_size=5, max_size=20, unique=True)
+                lists(string_containing(s, max_size=255, alphabet=string.ascii_letters), min_size=5, max_size=20, unique=True)
             )
         )
     )

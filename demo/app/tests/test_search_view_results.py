@@ -15,7 +15,7 @@ from .strategies import string_containing, string_not_containing
 
 
 class SearchViewResults(WebTestMixin, TestCase):
-    @given(lists(text(min_size=1, max_size=255, alphabet=string.printable), max_size=50))
+    @given(lists(text(min_size=1, max_size=255, alphabet=string.ascii_letters), max_size=50))
     def test_no_query_is_supplied___context_has_all_results(self, names):
         ModelA.objects.bulk_create(ModelA(name=n) for n in names)
         call_command('update_index', remove=True, verbosity=0)
@@ -29,10 +29,10 @@ class SearchViewResults(WebTestMixin, TestCase):
             list((r.pk, r.app_label, r.model_name) for r in response.context['object_list'])
         )
 
-    @given(text(max_size=200, min_size=1, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
+    @given(text(max_size=200, min_size=1, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
             just(s),
-            lists(string_containing(s, max_size=255, alphabet=string.printable, with_spacing=True), min_size=1, max_size=20),
-            lists(string_not_containing(s, max_size=255, alphabet=string.printable), min_size=1, max_size=20),
+            lists(string_containing(s, max_size=255, alphabet=string.ascii_letters, with_spacing=True), min_size=1, max_size=20),
+            lists(string_not_containing(s, max_size=255, alphabet=string.ascii_letters), min_size=1, max_size=20),
         ))
     )
     def test_user_supplies_query_contained_by_some_objects___result_is_from_haystacks_normal_query(self, query_matching_missing):
@@ -50,19 +50,19 @@ class SearchViewResults(WebTestMixin, TestCase):
             list((r.pk, r.app_label, r.model_name) for r in response.context['object_list'])
         )
 
-    @given(text(max_size=200, min_size=1, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
+    @given(text(max_size=200, min_size=1, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
             just(s),
             lists(
                 tuples(
                     just(s),
-                    string_not_containing(s, max_size=255, alphabet=string.printable),
+                    string_not_containing(s, max_size=255, alphabet=string.ascii_letters),
                 ),
                 min_size=1,
                 max_size=20
             ),
             lists(
                 tuples(
-                    string_containing(s, min_size=len(s) + 2, max_size=255, alphabet=string.printable),
+                    string_containing(s, min_size=len(s) + 2, max_size=255, alphabet=string.ascii_letters),
                     just(s),
                 ),
                 min_size=1,
@@ -85,12 +85,12 @@ class SearchViewResults(WebTestMixin, TestCase):
             set(r.object for r in response.context['object_list'])
         )
 
-    @given(text(max_size=200, min_size=1, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
+    @given(text(max_size=200, min_size=1, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
             just(s),
             lists(
                 tuples(
-                    string_containing(s, min_size=len(s) + 2, max_size=255, alphabet=string.printable),
-                    string_containing(s, min_size=len(s) + 2, max_size=255, alphabet=string.printable),
+                    string_containing(s, min_size=len(s) + 2, max_size=255, alphabet=string.ascii_letters),
+                    string_containing(s, min_size=len(s) + 2, max_size=255, alphabet=string.ascii_letters),
                 ),
                 min_size=1,
                 max_size=20
@@ -109,9 +109,9 @@ class SearchViewResults(WebTestMixin, TestCase):
 
         self.assertEqual(0, len(response.context['object_list']))
 
-    @given(text(max_size=200, min_size=1, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
+    @given(text(max_size=200, min_size=1, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
             just(s),
-            string_containing(s, max_size=255, alphabet=string.printable, with_spacing=True),
+            string_containing(s, max_size=255, alphabet=string.ascii_letters, with_spacing=True),
         ))
     )
     def test_user_supplies_query_with_a_bad_model___no_results_are_returned(self, q_names):
@@ -126,9 +126,9 @@ class SearchViewResults(WebTestMixin, TestCase):
 
         self.assertEqual(0, len(response.context['object_list']))
 
-    @given(text(max_size=200, min_size=1, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
+    @given(text(max_size=200, min_size=1, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
             just(s),
-            string_containing(s, max_size=255, alphabet=string.printable, with_spacing=True),
+            string_containing(s, max_size=255, alphabet=string.ascii_letters, with_spacing=True),
         ))
     )
     def test_user_supplies_query_with_a_bad_app___no_results_are_returned(self, q_names):
@@ -143,9 +143,9 @@ class SearchViewResults(WebTestMixin, TestCase):
 
         self.assertEqual(0, len(response.context['object_list']))
 
-    @given(text(max_size=5, min_size=1, alphabet=string.printable).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
+    @given(text(max_size=5, min_size=1, alphabet=string.ascii_letters).filter(lambda s: s.strip()).flatmap(lambda s: tuples(
             just(s),
-            lists(string_containing(s, min_size=10, max_size=255, alphabet=string.printable, with_spacing=True), min_size=10, max_size=50),
+            lists(string_containing(s, min_size=10, max_size=255, alphabet=string.ascii_letters, with_spacing=True), min_size=10, max_size=50),
         )),
         settings=Settings(max_examples=1),
     )

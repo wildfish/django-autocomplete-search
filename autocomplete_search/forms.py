@@ -7,7 +7,6 @@ from django.forms.utils import flatatt
 from django.utils.encoding import force_text
 from django.template.loader import get_template
 from haystack.forms import SearchForm
-from haystack.inputs import Exact
 from haystack.query import EmptySearchQuerySet
 
 from autocomplete_search.app_settings import AUTCOMPLETE_DOCUMENT_FIELD
@@ -40,7 +39,7 @@ class AutocompleteSearchWidget(widgets.Input):
 
 
 class AutocompleteSearchForm(SearchForm):
-    q = forms.CharField(max_length=255, required=False, widget=AutocompleteSearchWidget)
+    q = forms.CharField(max_length=255, widget=AutocompleteSearchWidget)
 
     def __init__(self, *args, url=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -75,7 +74,7 @@ class AutocompleteSearchForm(SearchForm):
                 # interested in and search on those,
                 ids = model.objects.filter(**{self.cleaned_data['field']: self.cleaned_data['q']}).values_list('id', flat=True)
                 if ids:
-                    sqs = self.searchqueryset.filter(id__in=ids).models(model)
+                    sqs = self.searchqueryset.filter(pk__in=ids).models(model)
                 else:
                     return EmptySearchQuerySet()
             except LookupError:

@@ -37,9 +37,9 @@ class SearchView(HaystackSearchView):
 
         for model, fields in self.get_autocomplete_fields().items():
             for field in fields:
-                _lookup = self.get_field_lookup(model, field)
-
-                for q in model.objects.filter(**{_lookup: self.request.GET['q']}).values_list(field, flat=True).distinct():
+                queryset = self.get_queryset().models(model).autocomplete(**{field: self.request.GET['q']})
+                objects = [r.object for r in queryset if r.object]
+                for q in set(getattr(o, field) for o in objects):
                     results.append({
                         'app': model._meta.app_label,
                         'model': model._meta.object_name,
