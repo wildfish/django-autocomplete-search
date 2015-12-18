@@ -21,6 +21,22 @@ install the python bindings for your chosen backend. For example if you are usin
 
     $> pip install elasticsearch
 
+Once you have the app installed into your environment you will need to add it to your ``INSALLED_APPS``::
+
+    INSTALLED_APPS = (
+        # django core apps
+        
+        'haystack',
+        'autocomplete_search',
+        
+        # project apps
+    )
+    
+And add the css and javascript into your template::
+
+    <link href="{% static 'autocomplete_search/dist/autocomplete-search.css' %}" rel="stylesheet">
+    <script src="{% static 'autocomplete_search/dist/autocomplete-search.js' %}"></script>
+
 django 1.9
 ==========
 
