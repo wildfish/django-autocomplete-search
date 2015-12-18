@@ -1,0 +1,12 @@
+@import url('./jquery-ui-components/jquery.ui.core.css');
+@import url('./jquery-ui-components/jquery.ui.autocomplete.css');
+@import url('./jquery-ui-components/jquery.ui.menu.css');
+
+.ui-autocomplete {
+    background: white;
+    border: 1px solid black;
+}
+
+.ui-autocomplete .ui-menu-item .ui-state-hover, .ui-autocomplete .ui-menu-item .ui-state-focus{
+    background: lightgrey;
+}
