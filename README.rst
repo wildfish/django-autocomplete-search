@@ -15,8 +15,10 @@ Currently we don't have a proper bundle for this so to install it check out the 
     $> npm run build
     $> python setup.py install
 
-django-autocomplete-search runs on top of [django-haystack](http://haystacksearch.org/) so you will need to setup your
-indexes according to their [docs](http://django-haystack.readthedocs.org/en/latest/). Additionally you will need to
+.. _django-haystack: http://haystacksearch.org/
+.. _docs: http://django-haystack.readthedocs.org/en/latest/
+django-autocomplete-search runs on top of django-haystack_ so you will need to setup your
+indexes according to their docs_. Additionally you will need to
 install the python bindings for your chosen backend. For example if you are using elastic search you will need to run::
 
     $> pip install elasticsearch
