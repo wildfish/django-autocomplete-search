@@ -55,7 +55,7 @@ setup(
     description='Handles autocompleting text searches by model and field',
     long_description=README,
     install_requires=[
-        'django<1.9',
+        'django<1.12',
         'django-haystack',
     ],
 )
